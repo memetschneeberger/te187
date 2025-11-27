@@ -1,1 +1,546 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Englisch lernen – Mini Trainer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
+    body {
+      margin: 0;
+      background: #f3f4f6;
+      color: #111827;
+    }
+
+    header {
+      background: #1f2933;
+      color: white;
+      padding: 1rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.4rem;
+    }
+
+    nav {
+      margin-top: 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    nav a {
+      color: #e5e7eb;
+      text-decoration: none;
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid #4b5563;
+      font-size: 0.85rem;
+    }
+
+    nav a:hover {
+      background: #4b5563;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 1.5rem auto;
+      padding: 0 1rem 2rem;
+    }
+
+    section {
+      background: white;
+      border-radius: 0.75rem;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+    }
+
+    section h2 {
+      margin-top: 0;
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    section p {
+      margin-top: 0;
+      margin-bottom: 0.75rem;
+      font-size: 0.95rem;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      background: #eff6ff;
+      color: #1d4ed8;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+
+    .grid {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    @media (min-width: 768px) {
+      .grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .card {
+      border-radius: 0.75rem;
+      border: 1px solid #e5e7eb;
+      padding: 0.75rem 1rem;
+      background: #f9fafb;
+    }
+
+    .card strong {
+      display: block;
+      font-size: 1rem;
+    }
+
+    .flashcard {
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      text-align: center;
+      background: linear-gradient(135deg, #eff6ff, #ecfdf3);
+      border: 1px solid #d1d5db;
+      min-height: 150px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+
+    .flashcard-word {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    .flashcard-translation {
+      font-size: 1rem;
+      color: #4b5563;
+    }
+
+    .flashcard-example {
+      font-style: italic;
+      font-size: 0.9rem;
+      color: #374151;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 0.45rem 0.9rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      background: #2563eb;
+      color: white;
+      margin-right: 0.25rem;
+      margin-top: 0.25rem;
+    }
+
+    button.secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .quiz-question {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .quiz-options button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 0.35rem;
+    }
+
+    .result {
+      font-size: 0.9rem;
+      margin-top: 0.4rem;
+    }
+
+    .result.ok {
+      color: #15803d;
+    }
+
+    .result.bad {
+      color: #b91c1c;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .input-row input {
+      flex: 1;
+      padding: 0.4rem 0.6rem;
+      border-radius: 0.5rem;
+      border: 1px solid #d1d5db;
+      font-size: 0.9rem;
+    }
+
+    .small {
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    code {
+      background: #f3f4f6;
+      padding: 0.1rem 0.3rem;
+      border-radius: 0.25rem;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Englisch lernen – Deine Mini Lernseite</h1>
+    <nav>
+      <a href="#vokabeln">Vokabeltrainer</a>
+      <a href="#grammatik">Grammatik</a>
+      <a href="#satzbau">Satzbau</a>
+      <a href="#quiz">Quiz</a>
+      <a href="#tipps">Lerntipps</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Begrüßung -->
+    <section id="intro">
+      <span class="badge">Start</span>
+      <h2>Willkommen!</h2>
+      <p>
+        Auf dieser Seite kannst du dein Englisch üben: Vokabeln, Grammatik, Satzbau
+        und kleine Quiz-Fragen. Alles läuft im Browser – ohne Anmeldung.
+      </p>
+      <p class="small">
+        Tipp: Du kannst die Seite speichern und immer wieder nutzen. (Rechtsklick → „Seite speichern unter…“)
+      </p>
+    </section>
+
+    <!-- Vokabeltrainer -->
+    <section id="vokabeln">
+      <span class="badge">Wortschatz</span>
+      <h2>Vokabeltrainer (Flashcards)</h2>
+      <p>Klicke auf „Nächste Karte“, um neue Wörter zu sehen. Versuche zuerst die Übersetzung zu raten.</p>
+
+      <div class="flashcard" id="flashcard">
+        <div class="flashcard-word" id="flashcard-word">hello</div>
+        <div class="flashcard-translation" id="flashcard-translation">hallo</div>
+        <div class="flashcard-example" id="flashcard-example">Hello, how are you?</div>
+      </div>
+      <div style="margin-top: 0.6rem;">
+        <button id="btn-next-card">Nächste Karte</button>
+        <button class="secondary" id="btn-toggle-translation">Übersetzung aus/ein</button>
+      </div>
+    </section>
+
+    <!-- Grammatik: Present Simple vs Present Continuous -->
+    <section id="grammatik">
+      <span class="badge">Grammatik</span>
+      <h2>Present Simple vs. Present Continuous</h2>
+      <div class="grid grid-2">
+        <div class="card">
+          <strong>Present Simple</strong>
+          <p>Verwendet für Gewohnheiten, Fakten und Dinge, die immer oder regelmäßig passieren.</p>
+          <ul>
+            <li><code>I work in an office.</code> – Ich arbeite in einem Büro. (allgemeine Tatsache)</li>
+            <li><code>She gets up at 7 o'clock.</code> – Sie steht um 7 Uhr auf. (Routine)</li>
+            <li><code>The sun rises in the east.</code> – Die Sonne geht im Osten auf. (Fakt)</li>
+          </ul>
+          <p class="small">Form: <code>Verb in Grundform</code> (he/she/it: Verb + <code>-s</code>)</p>
+        </div>
+        <div class="card">
+          <strong>Present Continuous</strong>
+          <p>Verwendet für Dinge, die <b>jetzt gerade</b> passieren oder vorübergehend sind.</p>
+          <ul>
+            <li><code>I am working right now.</code> – Ich arbeite gerade.</li>
+            <li><code>She is studying for an exam.</code> – Sie lernt für eine Prüfung (in dieser Zeit).</li>
+            <li><code>They are watching TV.</code> – Sie schauen gerade Fernsehen.</li>
+          </ul>
+          <p class="small">Form: <code>am/is/are + Verb + -ing</code> (z.B. <code>I am eating</code>)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Satzbau Übung -->
+    <section id="satzbau">
+      <span class="badge">Satzbau</span>
+      <h2>Satzbau – Baue den korrekten Satz</h2>
+      <p>Ordne die Wörter im Kopf zu einem richtigen englischen Satz und gib ihn unten ein.</p>
+
+      <div class="card">
+        <p class="quiz-question">
+          1. Satz: <code>always / I / coffee / morning / the / in / drink</code>
+        </p>
+        <div class="input-row">
+          <input type="text" id="sentence-input-1" placeholder="Deine Lösung (auf Englisch)" />
+          <button data-check-sentence="1">Prüfen</button>
+        </div>
+        <p class="small">Tipp: Großschreibung am Satzanfang nicht vergessen.</p>
+        <div class="result" id="sentence-result-1"></div>
+      </div>
+
+      <div class="card" style="margin-top: 0.75rem;">
+        <p class="quiz-question">
+          2. Satz: <code>is / reading / she / book / a</code>
+        </p>
+        <div class="input-row">
+          <input type="text" id="sentence-input-2" placeholder="Deine Lösung (auf Englisch)" />
+          <button data-check-sentence="2">Prüfen</button>
+        </div>
+        <div class="result" id="sentence-result-2"></div>
+      </div>
+    </section>
+
+    <!-- Quiz -->
+    <section id="quiz">
+      <span class="badge">Quiz</span>
+      <h2>Mini-Quiz: Welche Antwort ist richtig?</h2>
+
+      <div class="card" id="quiz-card">
+        <p class="quiz-question" id="quiz-question">
+          Wie übersetzt man „Ich bin müde“?
+        </p>
+        <div class="quiz-options" id="quiz-options">
+          <!-- Buttons werden per JavaScript befüllt -->
+        </div>
+        <div class="result" id="quiz-result"></div>
+        <button id="quiz-next" style="margin-top: 0.5rem;">Nächste Frage</button>
+      </div>
+    </section>
+
+    <!-- Lerntipps -->
+    <section id="tipps">
+      <span class="badge">Tipps</span>
+      <h2>Lerntipps für dein Englisch</h2>
+      <div class="grid grid-2">
+        <div class="card">
+          <strong>Jeden Tag ein bisschen</strong>
+          <p>Lieber 15 Minuten pro Tag als einmal pro Woche 2 Stunden. Dein Gehirn lernt besser in kleinen, regelmäßigen Schritten.</p>
+        </div>
+        <div class="card">
+          <strong>Englisch hören</strong>
+          <p>Schau Serien oder YouTube auf Englisch, am Anfang mit deutschen, später mit englischen Untertiteln.</p>
+        </div>
+        <div class="card">
+          <strong>Vokabeln im Kontext</strong>
+          <p>Lerne Wörter mit einem Beispiel­satz, nicht einzeln. So merkst du dir besser, wie sie verwendet werden.</p>
+        </div>
+        <div class="card">
+          <strong>Keine Angst vor Fehlern</strong>
+          <p>Fehler sind Teil des Lernens. Wichtig ist, dass du sprichst und schreibst – Perfektion kommt später.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Erstellt als einfache Lernseite. Du kannst den Code beliebig anpassen und erweitern. 😊
+  </footer>
+
+  <script>
+    // -------- VOKABELTRAINER --------
+    const flashcards = [
+      {
+        word: "hello",
+        translation: "hallo",
+        example: "Hello, how are you?"
+      },
+      {
+        word: "to learn",
+        translation: "lernen",
+        example: "I want to learn English."
+      },
+      {
+        word: "office",
+        translation: "Büro",
+        example: "She works in an office."
+      },
+      {
+        word: "coffee",
+        translation: "Kaffee",
+        example: "He drinks coffee every morning."
+      },
+      {
+        word: "tired",
+        translation: "müde",
+        example: "I am tired after work."
+      },
+      {
+        word: "exam",
+        translation: "Prüfung",
+        example: "We have an exam next week."
+      }
+    ];
+
+    let currentCardIndex = 0;
+    let translationVisible = true;
+
+    const wordEl = document.getElementById("flashcard-word");
+    const translationEl = document.getElementById("flashcard-translation");
+    const exampleEl = document.getElementById("flashcard-example");
+
+    function showCard(index) {
+      const card = flashcards[index];
+      wordEl.textContent = card.word;
+      translationEl.textContent = card.translation;
+      exampleEl.textContent = card.example;
+      translationEl.style.visibility = translationVisible ? "visible" : "hidden";
+    }
+
+    document.getElementById("btn-next-card").addEventListener("click", () => {
+      currentCardIndex = (currentCardIndex + 1) % flashcards.length;
+      showCard(currentCardIndex);
+    });
+
+    document.getElementById("btn-toggle-translation").addEventListener("click", () => {
+      translationVisible = !translationVisible;
+      translationEl.style.visibility = translationVisible ? "visible" : "hidden";
+    });
+
+    // Initial anzeigen
+    showCard(currentCardIndex);
+
+    // -------- SATZBAU ÜBUNG --------
+    const correctSentences = {
+      1: ["i always drink coffee in the morning.", "i always drink coffee in the morning"],
+      2: ["she is reading a book.", "she is reading a book"]
+    };
+
+    function normalizeSentence(text) {
+      return text.trim().toLowerCase().replace(/\s+/g, " ");
+    }
+
+    document.querySelectorAll("button[data-check-sentence]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-check-sentence");
+        const input = document.getElementById(`sentence-input-${id}`);
+        const resultEl = document.getElementById(`sentence-result-${id}`);
+        const user = normalizeSentence(input.value);
+
+        if (!user) {
+          resultEl.textContent = "Bitte gib einen Satz ein.";
+          resultEl.className = "result bad";
+          return;
+        }
+
+        const correctList = correctSentences[id];
+        const isCorrect = correctList.some(s => normalizeSentence(s) === user);
+
+        if (isCorrect) {
+          resultEl.textContent = "✅ Super! Der Satz ist korrekt.";
+          resultEl.className = "result ok";
+        } else {
+          resultEl.textContent = "❌ Nicht ganz. Eine mögliche Lösung: \"" + correctList[0] + "\"";
+          resultEl.className = "result bad";
+        }
+      });
+    });
+
+    // -------- QUIZ --------
+    const quizData = [
+      {
+        question: "Wie übersetzt man „Ich bin müde“?",
+        options: [
+          "I am hungry.",
+          "I am tired.",
+          "I am late."
+        ],
+        correctIndex: 1
+      },
+      {
+        question: "Welche Form ist richtig (Present Simple)?",
+        options: [
+          "She go to work every day.",
+          "She goes to work every day.",
+          "She is go to work every day."
+        ],
+        correctIndex: 1
+      },
+      {
+        question: "Welche Form ist richtig (Present Continuous)?",
+        options: [
+          "They watch TV now.",
+          "They are watching TV now.",
+          "They watching TV now."
+        ],
+        correctIndex: 1
+      },
+      {
+        question: "Was bedeutet „to study“?",
+        options: [
+          "lernen / studieren",
+          "essen",
+          "reisen"
+        ],
+        correctIndex: 0
+      }
+    ];
+
+    let currentQuizIndex = 0;
+    const quizQuestionEl = document.getElementById("quiz-question");
+    const quizOptionsEl = document.getElementById("quiz-options");
+    const quizResultEl = document.getElementById("quiz-result");
+
+    function loadQuizQuestion(index) {
+      const q = quizData[index];
+      quizQuestionEl.textContent = q.question;
+      quizOptionsEl.innerHTML = "";
+      quizResultEl.textContent = "";
+
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.addEventListener("click", () => {
+          if (i === q.correctIndex) {
+            quizResultEl.textContent = "✅ Richtig!";
+            quizResultEl.className = "result ok";
+          } else {
+            quizResultEl.textContent = "❌ Falsch. Richtige Antwort: " + q.options[q.correctIndex];
+            quizResultEl.className = "result bad";
+          }
+        });
+        quizOptionsEl.appendChild(btn);
+      });
+    }
+
+    document.getElementById("quiz-next").addEventListener("click", () => {
+      currentQuizIndex = (currentQuizIndex + 1) % quizData.length;
+      loadQuizQuestion(currentQuizIndex);
+    });
+
+    // Erste Frage laden
+    loadQuizQuestion(currentQuizIndex);
+  </script>
+</body>
+</html>
