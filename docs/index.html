@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>Englisch lernen – Mini Trainer</title>
+  <title>Englisch Lernspiel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     * {
@@ -12,145 +12,190 @@
 
     body {
       margin: 0;
-      background: #f3f4f6;
+      background: radial-gradient(circle at top, #dbeafe, #f9fafb);
       color: #111827;
     }
 
-    header {
-      background: #1f2933;
-      color: white;
-      padding: 1rem 1.5rem;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 1.4rem;
-    }
-
-    nav {
-      margin-top: 0.5rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    nav a {
-      color: #e5e7eb;
-      text-decoration: none;
-      padding: 0.35rem 0.7rem;
-      border-radius: 999px;
-      border: 1px solid #4b5563;
-      font-size: 0.85rem;
-    }
-
-    nav a:hover {
-      background: #4b5563;
-    }
-
-    main {
-      max-width: 1000px;
+    .app {
+      max-width: 900px;
       margin: 1.5rem auto;
-      padding: 0 1rem 2rem;
+      padding: 1rem;
     }
 
-    section {
+    .card {
       background: white;
-      border-radius: 0.75rem;
+      border-radius: 1rem;
       padding: 1.25rem 1.5rem;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.12);
+      border: 1px solid #e5e7eb;
     }
 
-    section h2 {
-      margin-top: 0;
-      font-size: 1.25rem;
-      margin-bottom: 0.5rem;
+    h1 {
+      font-size: 1.6rem;
+      margin: 0 0 0.5rem;
+      text-align: center;
     }
 
-    section p {
-      margin-top: 0;
-      margin-bottom: 0.75rem;
+    .subtitle {
+      text-align: center;
       font-size: 0.95rem;
+      color: #6b7280;
+      margin-bottom: 1rem;
     }
 
-    .badge {
-      display: inline-block;
-      padding: 0.2rem 0.5rem;
-      border-radius: 999px;
-      font-size: 0.7rem;
-      background: #eff6ff;
-      color: #1d4ed8;
-      margin-bottom: 0.5rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .score,
+    .level {
+      font-size: 0.95rem;
       font-weight: 600;
     }
 
-    .grid {
-      display: grid;
-      gap: 0.75rem;
+    .hearts {
+      font-size: 1.1rem;
     }
 
-    @media (min-width: 768px) {
-      .grid-2 {
+    .progress-wrapper {
+      flex: 1 1 100%;
+      background: #f3f4f6;
+      border-radius: 999px;
+      height: 10px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #22c55e, #16a34a);
+      transition: width 0.2s ease-out;
+    }
+
+    .question-box {
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .question-type {
+      display: inline-block;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #4f46e5;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+    }
+
+    .question-text {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .question-sub {
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+
+    .options {
+      display: grid;
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .options {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
-    .card {
-      border-radius: 0.75rem;
+    .option-btn {
+      border-radius: 0.9rem;
       border: 1px solid #e5e7eb;
-      padding: 0.75rem 1rem;
+      padding: 0.65rem 0.8rem;
       background: #f9fafb;
-    }
-
-    .card strong {
-      display: block;
-      font-size: 1rem;
-    }
-
-    .flashcard {
-      border-radius: 0.75rem;
-      padding: 1.5rem;
-      text-align: center;
-      background: linear-gradient(135deg, #eff6ff, #ecfdf3);
-      border: 1px solid #d1d5db;
-      min-height: 150px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      text-align: left;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 0.4rem;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      transition: transform 0.05s ease-out, box-shadow 0.05s ease-out, background 0.15s;
     }
 
-    .flashcard-word {
-      font-size: 1.8rem;
-      font-weight: 700;
+    .option-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
     }
 
-    .flashcard-translation {
-      font-size: 1rem;
-      color: #4b5563;
+    .option-btn.correct {
+      background: #dcfce7;
+      border-color: #16a34a;
     }
 
-    .flashcard-example {
-      font-style: italic;
+    .option-btn.wrong {
+      background: #fee2e2;
+      border-color: #dc2626;
+    }
+
+    .option-label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    .feedback {
+      margin-top: 0.6rem;
+      font-size: 0.95rem;
+      min-height: 1.1rem;
+    }
+
+    .feedback.ok {
+      color: #15803d;
+    }
+
+    .feedback.bad {
+      color: #b91c1c;
+    }
+
+    .example-sentence {
+      margin-top: 0.5rem;
       font-size: 0.9rem;
-      color: #374151;
+      color: #4b5563;
+      font-style: italic;
+    }
+
+    .bottom-bar {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
     }
 
     button {
-      border: none;
       border-radius: 999px;
+      border: none;
       padding: 0.45rem 0.9rem;
-      cursor: pointer;
       font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
       background: #2563eb;
       color: white;
-      margin-right: 0.25rem;
-      margin-top: 0.25rem;
     }
 
     button.secondary {
@@ -158,389 +203,381 @@
       color: #111827;
     }
 
-    button:hover {
-      opacity: 0.9;
-    }
-
-    .quiz-question {
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-
-    .quiz-options button {
-      display: block;
-      width: 100%;
-      text-align: left;
-      margin-bottom: 0.35rem;
-    }
-
-    .result {
-      font-size: 0.9rem;
-      margin-top: 0.4rem;
-    }
-
-    .result.ok {
-      color: #15803d;
-    }
-
-    .result.bad {
-      color: #b91c1c;
-    }
-
-    .input-row {
-      display: flex;
-      gap: 0.5rem;
-      margin-top: 0.5rem;
-    }
-
-    .input-row input {
-      flex: 1;
-      padding: 0.4rem 0.6rem;
-      border-radius: 0.5rem;
-      border: 1px solid #d1d5db;
-      font-size: 0.9rem;
+    button:disabled {
+      opacity: 0.6;
+      cursor: default;
     }
 
     .small {
       font-size: 0.8rem;
-      color: #6b7280;
+      color: #9ca3af;
     }
 
-    footer {
+    .game-over {
       text-align: center;
-      padding: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .game-over h2 {
+      margin-bottom: 0.25rem;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.75rem;
       font-size: 0.8rem;
       color: #6b7280;
+      justify-content: center;
     }
 
-    code {
-      background: #f3f4f6;
-      padding: 0.1rem 0.3rem;
-      border-radius: 0.25rem;
-      font-size: 0.85rem;
+    .chip {
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      border: 1px dashed #e5e7eb;
+      background: #f9fafb;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Englisch lernen – Deine Mini Lernseite</h1>
-    <nav>
-      <a href="#vokabeln">Vokabeltrainer</a>
-      <a href="#grammatik">Grammatik</a>
-      <a href="#satzbau">Satzbau</a>
-      <a href="#quiz">Quiz</a>
-      <a href="#tipps">Lerntipps</a>
-    </nav>
-  </header>
-
-  <main>
-    <!-- Begrüßung -->
-    <section id="intro">
-      <span class="badge">Start</span>
-      <h2>Willkommen!</h2>
-      <p>
-        Auf dieser Seite kannst du dein Englisch üben: Vokabeln, Grammatik, Satzbau
-        und kleine Quiz-Fragen. Alles läuft im Browser – ohne Anmeldung.
+  <div class="app">
+    <div class="card">
+      <h1>🎮 Englisch Lernspiel</h1>
+      <p class="subtitle">
+        Sammle Punkte, halte deine Leben, und lerne dabei Englisch-Vokabeln.  
+        Wähle die richtige Übersetzung oder Bedeutung.
       </p>
-      <p class="small">
-        Tipp: Du kannst die Seite speichern und immer wieder nutzen. (Rechtsklick → „Seite speichern unter…“)
-      </p>
-    </section>
 
-    <!-- Vokabeltrainer -->
-    <section id="vokabeln">
-      <span class="badge">Wortschatz</span>
-      <h2>Vokabeltrainer (Flashcards)</h2>
-      <p>Klicke auf „Nächste Karte“, um neue Wörter zu sehen. Versuche zuerst die Übersetzung zu raten.</p>
-
-      <div class="flashcard" id="flashcard">
-        <div class="flashcard-word" id="flashcard-word">hello</div>
-        <div class="flashcard-translation" id="flashcard-translation">hallo</div>
-        <div class="flashcard-example" id="flashcard-example">Hello, how are you?</div>
-      </div>
-      <div style="margin-top: 0.6rem;">
-        <button id="btn-next-card">Nächste Karte</button>
-        <button class="secondary" id="btn-toggle-translation">Übersetzung aus/ein</button>
-      </div>
-    </section>
-
-    <!-- Grammatik: Present Simple vs Present Continuous -->
-    <section id="grammatik">
-      <span class="badge">Grammatik</span>
-      <h2>Present Simple vs. Present Continuous</h2>
-      <div class="grid grid-2">
-        <div class="card">
-          <strong>Present Simple</strong>
-          <p>Verwendet für Gewohnheiten, Fakten und Dinge, die immer oder regelmäßig passieren.</p>
-          <ul>
-            <li><code>I work in an office.</code> – Ich arbeite in einem Büro. (allgemeine Tatsache)</li>
-            <li><code>She gets up at 7 o'clock.</code> – Sie steht um 7 Uhr auf. (Routine)</li>
-            <li><code>The sun rises in the east.</code> – Die Sonne geht im Osten auf. (Fakt)</li>
-          </ul>
-          <p class="small">Form: <code>Verb in Grundform</code> (he/she/it: Verb + <code>-s</code>)</p>
-        </div>
-        <div class="card">
-          <strong>Present Continuous</strong>
-          <p>Verwendet für Dinge, die <b>jetzt gerade</b> passieren oder vorübergehend sind.</p>
-          <ul>
-            <li><code>I am working right now.</code> – Ich arbeite gerade.</li>
-            <li><code>She is studying for an exam.</code> – Sie lernt für eine Prüfung (in dieser Zeit).</li>
-            <li><code>They are watching TV.</code> – Sie schauen gerade Fernsehen.</li>
-          </ul>
-          <p class="small">Form: <code>am/is/are + Verb + -ing</code> (z.B. <code>I am eating</code>)</p>
+      <div class="status-bar">
+        <div class="score">Punkte: <span id="score">0</span></div>
+        <div class="level">Level: <span id="level">1</span></div>
+        <div class="hearts" id="hearts">❤️❤️❤️</div>
+        <div class="progress-wrapper">
+          <div class="progress-bar" id="progress-bar"></div>
         </div>
       </div>
-    </section>
 
-    <!-- Satzbau Übung -->
-    <section id="satzbau">
-      <span class="badge">Satzbau</span>
-      <h2>Satzbau – Baue den korrekten Satz</h2>
-      <p>Ordne die Wörter im Kopf zu einem richtigen englischen Satz und gib ihn unten ein.</p>
+      <div id="game-area">
+        <div class="question-box">
+          <div class="question-type" id="question-type">Vokabel</div>
+          <div class="question-text" id="question-text">
+            Wie heißt dieses Wort auf Deutsch?
+          </div>
+          <div class="question-sub" id="question-sub">
+            Wähle die richtige Bedeutung.
+          </div>
+        </div>
 
-      <div class="card">
-        <p class="quiz-question">
-          1. Satz: <code>always / I / coffee / morning / the / in / drink</code>
-        </p>
-        <div class="input-row">
-          <input type="text" id="sentence-input-1" placeholder="Deine Lösung (auf Englisch)" />
-          <button data-check-sentence="1">Prüfen</button>
+        <div class="options" id="options">
+          <!-- Optionen werden per JavaScript eingefügt -->
         </div>
-        <p class="small">Tipp: Großschreibung am Satzanfang nicht vergessen.</p>
-        <div class="result" id="sentence-result-1"></div>
-      </div>
 
-      <div class="card" style="margin-top: 0.75rem;">
-        <p class="quiz-question">
-          2. Satz: <code>is / reading / she / book / a</code>
-        </p>
-        <div class="input-row">
-          <input type="text" id="sentence-input-2" placeholder="Deine Lösung (auf Englisch)" />
-          <button data-check-sentence="2">Prüfen</button>
-        </div>
-        <div class="result" id="sentence-result-2"></div>
-      </div>
-    </section>
+        <div class="feedback" id="feedback"></div>
+        <div class="example-sentence" id="example"></div>
 
-    <!-- Quiz -->
-    <section id="quiz">
-      <span class="badge">Quiz</span>
-      <h2>Mini-Quiz: Welche Antwort ist richtig?</h2>
-
-      <div class="card" id="quiz-card">
-        <p class="quiz-question" id="quiz-question">
-          Wie übersetzt man „Ich bin müde“?
-        </p>
-        <div class="quiz-options" id="quiz-options">
-          <!-- Buttons werden per JavaScript befüllt -->
-        </div>
-        <div class="result" id="quiz-result"></div>
-        <button id="quiz-next" style="margin-top: 0.5rem;">Nächste Frage</button>
-      </div>
-    </section>
-
-    <!-- Lerntipps -->
-    <section id="tipps">
-      <span class="badge">Tipps</span>
-      <h2>Lerntipps für dein Englisch</h2>
-      <div class="grid grid-2">
-        <div class="card">
-          <strong>Jeden Tag ein bisschen</strong>
-          <p>Lieber 15 Minuten pro Tag als einmal pro Woche 2 Stunden. Dein Gehirn lernt besser in kleinen, regelmäßigen Schritten.</p>
-        </div>
-        <div class="card">
-          <strong>Englisch hören</strong>
-          <p>Schau Serien oder YouTube auf Englisch, am Anfang mit deutschen, später mit englischen Untertiteln.</p>
-        </div>
-        <div class="card">
-          <strong>Vokabeln im Kontext</strong>
-          <p>Lerne Wörter mit einem Beispiel­satz, nicht einzeln. So merkst du dir besser, wie sie verwendet werden.</p>
-        </div>
-        <div class="card">
-          <strong>Keine Angst vor Fehlern</strong>
-          <p>Fehler sind Teil des Lernens. Wichtig ist, dass du sprichst und schreibst – Perfektion kommt später.</p>
+        <div class="bottom-bar">
+          <div>
+            <button id="btn-next" disabled>Nächste Frage ▶</button>
+            <button id="btn-skip" class="secondary">Überspringen 🔁</button>
+          </div>
+          <span class="small">Spielerisches Lernen: je schneller & besser du bist, desto mehr Punkte pro Frage.</span>
         </div>
       </div>
-    </section>
-  </main>
 
-  <footer>
-    Erstellt als einfache Lernseite. Du kannst den Code beliebig anpassen und erweitern. 😊
-  </footer>
+      <div id="game-over" class="game-over" style="display:none;">
+        <h2>Spiel vorbei 😅</h2>
+        <p>Deine Punktzahl: <strong id="final-score">0</strong></p>
+        <p>Dein Level: <strong id="final-level">1</strong></p>
+        <button id="btn-restart">Nochmal spielen 🔁</button>
+
+        <div class="chip-row">
+          <span class="chip">Tipp: Spiele jeden Tag 5–10 Runden</span>
+          <span class="chip">Tipp: Sprich die Wörter laut nach</span>
+          <span class="chip">Tipp: Notiere dir neue Wörter in einem Heft</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
-    // -------- VOKABELTRAINER --------
-    const flashcards = [
-      {
-        word: "hello",
-        translation: "hallo",
-        example: "Hello, how are you?"
-      },
-      {
-        word: "to learn",
-        translation: "lernen",
-        example: "I want to learn English."
-      },
-      {
-        word: "office",
-        translation: "Büro",
-        example: "She works in an office."
-      },
-      {
-        word: "coffee",
-        translation: "Kaffee",
-        example: "He drinks coffee every morning."
-      },
-      {
-        word: "tired",
-        translation: "müde",
-        example: "I am tired after work."
-      },
-      {
-        word: "exam",
-        translation: "Prüfung",
-        example: "We have an exam next week."
-      }
+    // --- Datensatz mit Vokabeln ---
+    const vocabulary = [
+      {en: "tired", de: "müde", example: "I am tired after work."},
+      {en: "hungry", de: "hungrig", example: "He is hungry and wants to eat."},
+      {en: "office", de: "Büro", example: "She works in a big office."},
+      {en: "coffee", de: "Kaffee", example: "I drink coffee every morning."},
+      {en: "to learn", de: "lernen", example: "I want to learn English."},
+      {en: "exam", de: "Prüfung", example: "We have an important exam tomorrow."},
+      {en: "book", de: "Buch", example: "This book is very interesting."},
+      {en: "to study", de: "lernen / studieren", example: "She studies for her exam."},
+      {en: "quickly", de: "schnell", example: "He runs very quickly."},
+      {en: "slowly", de: "langsam", example: "Please speak slowly."},
+      {en: "always", de: "immer", example: "I always brush my teeth."},
+      {en: "sometimes", de: "manchmal", example: "Sometimes we eat pizza."},
+      {en: "never", de: "nie", example: "He never drinks coffee."},
+      {en: "friend", de: "Freund / Freundin", example: "My best friend lives in London."},
+      {en: "to travel", de: "reisen", example: "We love to travel to new cities."},
+      {en: "busy", de: "beschäftigt", example: "She is busy at work."},
+      {en: "job", de: "Job / Arbeit", example: "He has a new job."},
+      {en: "holiday", de: "Ferien / Urlaub", example: "We are on holiday in Spain."},
+      {en: "early", de: "früh", example: "He gets up early every day."},
+      {en: "late", de: "spät", example: "I went to bed late."}
     ];
 
-    let currentCardIndex = 0;
-    let translationVisible = true;
+    // --- Grundzustand ---
+    let score = 0;
+    let level = 1;
+    let lives = 3;
+    let questionsAnsweredInLevel = 0;
+    const questionsPerLevel = 6;
 
-    const wordEl = document.getElementById("flashcard-word");
-    const translationEl = document.getElementById("flashcard-translation");
-    const exampleEl = document.getElementById("flashcard-example");
+    let currentQuestion = null;
+    let acceptingAnswers = true;
 
-    function showCard(index) {
-      const card = flashcards[index];
-      wordEl.textContent = card.word;
-      translationEl.textContent = card.translation;
-      exampleEl.textContent = card.example;
-      translationEl.style.visibility = translationVisible ? "visible" : "hidden";
+    const scoreEl = document.getElementById("score");
+    const levelEl = document.getElementById("level");
+    const heartsEl = document.getElementById("hearts");
+    const progressBarEl = document.getElementById("progress-bar");
+    const questionTypeEl = document.getElementById("question-type");
+    const questionTextEl = document.getElementById("question-text");
+    const questionSubEl = document.getElementById("question-sub");
+    const optionsEl = document.getElementById("options");
+    const feedbackEl = document.getElementById("feedback");
+    const exampleEl = document.getElementById("example");
+    const btnNext = document.getElementById("btn-next");
+    const btnSkip = document.getElementById("btn-skip");
+    const gameArea = document.getElementById("game-area");
+    const gameOverBox = document.getElementById("game-over");
+    const finalScoreEl = document.getElementById("final-score");
+    const finalLevelEl = document.getElementById("final-level");
+    const btnRestart = document.getElementById("btn-restart");
+
+    function updateStatusBar() {
+      scoreEl.textContent = score;
+      levelEl.textContent = level;
+      heartsEl.textContent = "❤️".repeat(lives) + "🤍".repeat(3 - lives);
+
+      const progress = (questionsAnsweredInLevel / questionsPerLevel) * 100;
+      progressBarEl.style.width = progress + "%";
     }
 
-    document.getElementById("btn-next-card").addEventListener("click", () => {
-      currentCardIndex = (currentCardIndex + 1) % flashcards.length;
-      showCard(currentCardIndex);
-    });
-
-    document.getElementById("btn-toggle-translation").addEventListener("click", () => {
-      translationVisible = !translationVisible;
-      translationEl.style.visibility = translationVisible ? "visible" : "hidden";
-    });
-
-    // Initial anzeigen
-    showCard(currentCardIndex);
-
-    // -------- SATZBAU ÜBUNG --------
-    const correctSentences = {
-      1: ["i always drink coffee in the morning.", "i always drink coffee in the morning"],
-      2: ["she is reading a book.", "she is reading a book"]
-    };
-
-    function normalizeSentence(text) {
-      return text.trim().toLowerCase().replace(/\s+/g, " ");
+    function shuffle(array) {
+      return array
+        .map(value => ({value, sort: Math.random()}))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({value}) => value);
     }
 
-    document.querySelectorAll("button[data-check-sentence]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const id = btn.getAttribute("data-check-sentence");
-        const input = document.getElementById(`sentence-input-${id}`);
-        const resultEl = document.getElementById(`sentence-result-${id}`);
-        const user = normalizeSentence(input.value);
-
-        if (!user) {
-          resultEl.textContent = "Bitte gib einen Satz ein.";
-          resultEl.className = "result bad";
-          return;
+    function pickRandomDifferent(correctIndex, count) {
+      const indices = [];
+      const max = vocabulary.length;
+      while (indices.length < count) {
+        const idx = Math.floor(Math.random() * max);
+        if (idx !== correctIndex && !indices.includes(idx)) {
+          indices.push(idx);
         }
-
-        const correctList = correctSentences[id];
-        const isCorrect = correctList.some(s => normalizeSentence(s) === user);
-
-        if (isCorrect) {
-          resultEl.textContent = "✅ Super! Der Satz ist korrekt.";
-          resultEl.className = "result ok";
-        } else {
-          resultEl.textContent = "❌ Nicht ganz. Eine mögliche Lösung: \"" + correctList[0] + "\"";
-          resultEl.className = "result bad";
-        }
-      });
-    });
-
-    // -------- QUIZ --------
-    const quizData = [
-      {
-        question: "Wie übersetzt man „Ich bin müde“?",
-        options: [
-          "I am hungry.",
-          "I am tired.",
-          "I am late."
-        ],
-        correctIndex: 1
-      },
-      {
-        question: "Welche Form ist richtig (Present Simple)?",
-        options: [
-          "She go to work every day.",
-          "She goes to work every day.",
-          "She is go to work every day."
-        ],
-        correctIndex: 1
-      },
-      {
-        question: "Welche Form ist richtig (Present Continuous)?",
-        options: [
-          "They watch TV now.",
-          "They are watching TV now.",
-          "They watching TV now."
-        ],
-        correctIndex: 1
-      },
-      {
-        question: "Was bedeutet „to study“?",
-        options: [
-          "lernen / studieren",
-          "essen",
-          "reisen"
-        ],
-        correctIndex: 0
       }
-    ];
+      return indices;
+    }
 
-    let currentQuizIndex = 0;
-    const quizQuestionEl = document.getElementById("quiz-question");
-    const quizOptionsEl = document.getElementById("quiz-options");
-    const quizResultEl = document.getElementById("quiz-result");
+    function createQuestion() {
+      // Zufälligen Vokabel-Eintrag wählen
+      const correctIndex = Math.floor(Math.random() * vocabulary.length);
+      const correctWord = vocabulary[correctIndex];
 
-    function loadQuizQuestion(index) {
-      const q = quizData[index];
-      quizQuestionEl.textContent = q.question;
-      quizOptionsEl.innerHTML = "";
-      quizResultEl.textContent = "";
+      // Entweder EN->DE oder DE->EN (für Abwechslung)
+      const mode = Math.random() < 0.6 ? "en-to-de" : "de-to-en";
 
-      q.options.forEach((opt, i) => {
+      let prompt, subText, correctAnswer, optionsRaw, typeLabel;
+
+      if (mode === "en-to-de") {
+        prompt = `Was bedeutet „${correctWord.en}“ auf Deutsch?`;
+        subText = "Wähle die richtige Übersetzung.";
+        correctAnswer = correctWord.de;
+        typeLabel = "Vokabel (EN → DE)";
+
+        const wrongIndices = pickRandomDifferent(correctIndex, 3);
+        optionsRaw = shuffle([
+          correctWord.de,
+          vocabulary[wrongIndices[0]].de,
+          vocabulary[wrongIndices[1]].de,
+          vocabulary[wrongIndices[2]].de
+        ]);
+      } else {
+        prompt = `Welche englische Vokabel passt zu „${correctWord.de}“?`;
+        subText = "Wähle das richtige englische Wort.";
+        correctAnswer = correctWord.en;
+        typeLabel = "Vokabel (DE → EN)";
+
+        const wrongIndices = pickRandomDifferent(correctIndex, 3);
+        optionsRaw = shuffle([
+          correctWord.en,
+          vocabulary[wrongIndices[0]].en,
+          vocabulary[wrongIndices[1]].en,
+          vocabulary[wrongIndices[2]].en
+        ]);
+      }
+
+      currentQuestion = {
+        word: correctWord,
+        mode,
+        prompt,
+        subText,
+        correctAnswer,
+        options: optionsRaw,
+        typeLabel
+      };
+    }
+
+    function renderQuestion() {
+      if (!currentQuestion) return;
+
+      questionTypeEl.textContent = currentQuestion.typeLabel;
+      questionTextEl.textContent = currentQuestion.prompt;
+      questionSubEl.textContent = currentQuestion.subText;
+      feedbackEl.textContent = "";
+      feedbackEl.className = "feedback";
+      exampleEl.textContent = "";
+      btnNext.disabled = true;
+      acceptingAnswers = true;
+
+      optionsEl.innerHTML = "";
+
+      currentQuestion.options.forEach((opt, idx) => {
         const btn = document.createElement("button");
-        btn.textContent = opt;
-        btn.addEventListener("click", () => {
-          if (i === q.correctIndex) {
-            quizResultEl.textContent = "✅ Richtig!";
-            quizResultEl.className = "result ok";
-          } else {
-            quizResultEl.textContent = "❌ Falsch. Richtige Antwort: " + q.options[q.correctIndex];
-            quizResultEl.className = "result bad";
-          }
-        });
-        quizOptionsEl.appendChild(btn);
+        btn.className = "option-btn";
+        btn.dataset.option = opt;
+
+        const spanText = document.createElement("span");
+        spanText.textContent = opt;
+
+        const spanLabel = document.createElement("span");
+        spanLabel.className = "option-label";
+        spanLabel.textContent = String.fromCharCode(65 + idx); // A,B,C,D
+
+        btn.appendChild(spanText);
+        btn.appendChild(spanLabel);
+
+        btn.addEventListener("click", () => handleAnswer(btn, opt));
+        optionsEl.appendChild(btn);
       });
     }
 
-    document.getElementById("quiz-next").addEventListener("click", () => {
-      currentQuizIndex = (currentQuizIndex + 1) % quizData.length;
-      loadQuizQuestion(currentQuizIndex);
+    function handleAnswer(button, chosen) {
+      if (!acceptingAnswers) return;
+      acceptingAnswers = false;
+
+      const optionButtons = Array.from(document.querySelectorAll(".option-btn"));
+      optionButtons.forEach(b => b.disabled = true);
+
+      const isCorrect = chosen === currentQuestion.correctAnswer;
+
+      if (isCorrect) {
+        button.classList.add("correct");
+        feedbackEl.textContent = "✅ Richtig! Gut gemacht!";
+        feedbackEl.className = "feedback ok";
+
+        // Punkte: mit Level skalieren
+        const pointsGained = 10 + (level - 1) * 3;
+        score += pointsGained;
+        questionsAnsweredInLevel++;
+
+        exampleEl.textContent =
+          "Beispielsatz: " + currentQuestion.word.example;
+
+        // Level-Up?
+        if (questionsAnsweredInLevel >= questionsPerLevel) {
+          level++;
+          questionsAnsweredInLevel = 0;
+          feedbackEl.textContent += ` 🎉 Level up! Du bist jetzt Level ${level}.`;
+        }
+      } else {
+        button.classList.add("wrong");
+        feedbackEl.textContent =
+          "❌ Falsch. Richtig wäre: " + currentQuestion.correctAnswer;
+        feedbackEl.className = "feedback bad";
+
+        lives--;
+        exampleEl.textContent =
+          "Merke dir: " +
+          currentQuestion.word.en +
+          " = " +
+          currentQuestion.word.de +
+          ". Beispiel: " +
+          currentQuestion.word.example;
+      }
+
+      updateStatusBar();
+      btnNext.disabled = false;
+
+      if (lives <= 0) {
+        // kleines Delay, damit der Nutzer die letzte Frage noch wahrnimmt
+        setTimeout(() => endGame(), 600);
+      }
+    }
+
+    function nextQuestion() {
+      if (lives <= 0) return;
+      createQuestion();
+      renderQuestion();
+    }
+
+    function skipQuestion() {
+      if (!acceptingAnswers) return; // Frage wurde schon beantwortet
+      questionsAnsweredInLevel++;
+      feedbackEl.textContent = "⏭ Frage übersprungen. Versuch die nächste!";
+      feedbackEl.className = "feedback";
+      updateStatusBar();
+      btnNext.disabled = false;
+      acceptingAnswers = false;
+      // Optionen deaktivieren
+      const optionButtons = Array.from(document.querySelectorAll(".option-btn"));
+      optionButtons.forEach(b => (b.disabled = true));
+
+      if (questionsAnsweredInLevel >= questionsPerLevel) {
+        level++;
+        questionsAnsweredInLevel = 0;
+        feedbackEl.textContent += ` 🎉 Level up! Du bist jetzt Level ${level}.`;
+      }
+    }
+
+    function endGame() {
+      gameArea.style.display = "none";
+      gameOverBox.style.display = "block";
+      finalScoreEl.textContent = score;
+      finalLevelEl.textContent = level;
+    }
+
+    function resetGame() {
+      score = 0;
+      level = 1;
+      lives = 3;
+      questionsAnsweredInLevel = 0;
+      gameArea.style.display = "block";
+      gameOverBox.style.display = "none";
+      updateStatusBar();
+      nextQuestion();
+    }
+
+    // --- Event-Listener ---
+    btnNext.addEventListener("click", () => {
+      nextQuestion();
     });
 
-    // Erste Frage laden
-    loadQuizQuestion(currentQuizIndex);
+    btnSkip.addEventListener("click", () => {
+      skipQuestion();
+    });
+
+    if (btnRestart) {
+      btnRestart.addEventListener("click", () => {
+        resetGame();
+      });
+    }
+
+    // --- Start ---
+    updateStatusBar();
+    nextQuestion();
   </script>
 </body>
 </html>
